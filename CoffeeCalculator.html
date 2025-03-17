@@ -124,9 +124,13 @@
     /* Generate random coffee bean icons in the background */
     (function generateBeans() {
       const container = document.getElementById("bean-container");
-      const beanCount = 20; // Number of beans to generate
+      const beanCount = 10; // Number of beans to generate
       // Data URI for a simple coffee bean SVG icon
-      const beanSVG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%236f4e37" d="M32,2C19.85,2,10,11.85,10,24c0,9.833,6.73,18.16,16.27,21.6C26.14,48.39,26,49.17,26,50c0,7.18,5.82,13,13,13s13-5.82,13-13c0-.83-.14-1.61-.27-4.4C47.27,42.16,54,33.833,54,24C54,11.85,44.15,2,32,2z M32,8c9.941,0,18,8.059,18,18c0,8.74-6.813,15.96-15.625,17.906C33.562,43.094,33,43.844,33,44c0,5.523-4.477,10-10,10s-10-4.477-10-10c0-.156-.562-.906-1.375-1.094C20.813,41.96,14,34.74,14,26C14,16.059,22.059,8,32,8z"/></svg>';
+      const beanSVG = 'mybean.svg';
+      const beanSVG1 = 'grinder.svg';
+      const beanSVG2 = 'cup.svg';
+      const beanSVG3 = 'coffeemaker.svg';
+      const beanSVG4 = 'barista.svg';
       for (let i = 0; i < beanCount; i++) {
         const bean = document.createElement("img");
         bean.src = beanSVG;
@@ -134,7 +138,51 @@
         bean.style.width = (Math.random() * 30 + 20) + "px"; // Random width between 20 and 50px
         bean.style.top = (Math.random() * 100) + "%";
         bean.style.left = (Math.random() * 100) + "%";
-        bean.style.opacity = 0.1; // Light opacity
+        bean.style.opacity = 0.3; // Light opacity
+        bean.style.pointerEvents = "none";
+        container.appendChild(bean);
+      }
+      for (let i = 0; i < beanCount; i++) {
+        const bean = document.createElement("img");
+        bean.src = beanSVG1;
+        bean.style.position = "absolute";
+        bean.style.width = (Math.random() * 50 + 20) + "px"; // Random width between 20 and 50px
+        bean.style.top = (Math.random() * 100) + "%";
+        bean.style.left = (Math.random() * 100) + "%";
+        bean.style.opacity = 0.3; // Light opacity
+        bean.style.pointerEvents = "none";
+        container.appendChild(bean);
+      }
+      for (let i = 0; i < beanCount; i++) {
+        const bean = document.createElement("img");
+        bean.src = beanSVG2;
+        bean.style.position = "absolute";
+        bean.style.width = (Math.random() * 40 + 20) + "px"; // Random width between 20 and 50px
+        bean.style.top = (Math.random() * 100) + "%";
+        bean.style.left = (Math.random() * 100) + "%";
+        bean.style.opacity = 0.3; // Light opacity
+        bean.style.pointerEvents = "none";
+        container.appendChild(bean);
+      }
+      for (let i = 0; i < beanCount; i++) {
+        const bean = document.createElement("img");
+        bean.src = beanSVG3;
+        bean.style.position = "absolute";
+        bean.style.width = (Math.random() * 60 + 20) + "px"; // Random width between 20 and 50px
+        bean.style.top = (Math.random() * 100) + "%";
+        bean.style.left = (Math.random() * 100) + "%";
+        bean.style.opacity = 0.3; // Light opacity
+        bean.style.pointerEvents = "none";
+        container.appendChild(bean);
+      }
+      for (let i = 0; i < beanCount; i++) {
+        const bean = document.createElement("img");
+        bean.src = beanSVG4;
+        bean.style.position = "absolute";
+        bean.style.width = (Math.random() * 100 + 20) + "px"; // Random width between 20 and 50px
+        bean.style.top = (Math.random() * 100) + "%";
+        bean.style.left = (Math.random() * 100) + "%";
+        bean.style.opacity = 0.3; // Light opacity
         bean.style.pointerEvents = "none";
         container.appendChild(bean);
       }
