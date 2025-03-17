@@ -2,7 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>حاسبة القهوة</title>
+  <!-- Google Fonts for the title -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #f3e9d2; /* Light coffee cream background */
@@ -11,6 +15,18 @@
       text-align: center;
       margin: 0;
       padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    /* Bean container is placed behind everything */
+    #bean-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
     }
     .container {
       max-width: 400px;
@@ -20,6 +36,15 @@
       padding: 20px;
       margin: 20px auto;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    /* Title font styling based on language */
+    #title.arabic {
+      font-family: 'Cairo', sans-serif;
+      font-size: 2em;
+    }
+    #title.english {
+      font-family: 'Pacifico', cursive;
+      font-size: 2em;
     }
     label {
       display: block;
@@ -64,6 +89,9 @@
   </style>
 </head>
 <body>
+  <!-- Background bean container -->
+  <div id="bean-container"></div>
+
   <div class="container">
     <button id="langToggle"></button>
     <h1 id="title">حاسبة القهوة</h1>
@@ -90,10 +118,28 @@
     <p id="result"></p>
   </div>
 
-  <footer>Enjoy Your Coffee  </footer>
-  <footer>By Tamim</footer>
+  <footer id="footer"></footer>
 
   <script>
+    /* Generate random coffee bean icons in the background */
+    (function generateBeans() {
+      const container = document.getElementById("bean-container");
+      const beanCount = 20; // Number of beans to generate
+      // Data URI for a simple coffee bean SVG icon
+      const beanSVG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%236f4e37" d="M32,2C19.85,2,10,11.85,10,24c0,9.833,6.73,18.16,16.27,21.6C26.14,48.39,26,49.17,26,50c0,7.18,5.82,13,13,13s13-5.82,13-13c0-.83-.14-1.61-.27-4.4C47.27,42.16,54,33.833,54,24C54,11.85,44.15,2,32,2z M32,8c9.941,0,18,8.059,18,18c0,8.74-6.813,15.96-15.625,17.906C33.562,43.094,33,43.844,33,44c0,5.523-4.477,10-10,10s-10-4.477-10-10c0-.156-.562-.906-1.375-1.094C20.813,41.96,14,34.74,14,26C14,16.059,22.059,8,32,8z"/></svg>';
+      for (let i = 0; i < beanCount; i++) {
+        const bean = document.createElement("img");
+        bean.src = beanSVG;
+        bean.style.position = "absolute";
+        bean.style.width = (Math.random() * 30 + 20) + "px"; // Random width between 20 and 50px
+        bean.style.top = (Math.random() * 100) + "%";
+        bean.style.left = (Math.random() * 100) + "%";
+        bean.style.opacity = 0.1; // Light opacity
+        bean.style.pointerEvents = "none";
+        container.appendChild(bean);
+      }
+    })();
+
     // Translation texts for Arabic and English
     const translations = {
       ar: {
@@ -116,7 +162,9 @@
         resultCoffee: "لـ {coffee} غرام من القهوة بنسبة 1:{ratio}، استخدم {water} مل من الماء.",
         waterPlaceholder: "ادخل كمية الماء بالمل",
         coffeePlaceholder: "ادخل كمية القهوة بالغرام",
-        toggleLang: "English"
+        toggleLang: "English",
+        footerLine1: "استمتع بقهوتك",
+        footerLine2: "بواسطة تميم"
       },
       en: {
         title: "Coffee Calculator",
@@ -138,7 +186,9 @@
         resultCoffee: "For {coffee} grams of coffee at a 1:{ratio} ratio, use {water} ml of water.",
         waterPlaceholder: "Enter water in ml",
         coffeePlaceholder: "Enter coffee in grams",
-        toggleLang: "العربية"
+        toggleLang: "العربية",
+        footerLine1: "Enjoy Your Coffee",
+        footerLine2: "By Tamim"
       }
     };
 
@@ -154,6 +204,7 @@
     const coffeeInput = document.getElementById('coffee');
     const result = document.getElementById('result');
     const langToggle = document.getElementById('langToggle');
+    const footer = document.getElementById('footer');
 
     // Update page text based on current language
     function updateLanguage() {
@@ -166,12 +217,18 @@
       coffeeInput.placeholder = texts.coffeePlaceholder;
       langToggle.textContent = texts.toggleLang;
 
+      // Update the title's font based on language
+      title.className = (currentLang === 'ar') ? 'arabic' : 'english';
+
       // Update the ratio options text
       for (let i = 0; i < ratioSelect.options.length; i++) {
         const option = ratioSelect.options[i];
         const value = option.value;
         option.textContent = texts.options[value];
       }
+
+      // Update footer content based on the language
+      footer.innerHTML = `<p>${texts.footerLine1}</p><p>${texts.footerLine2}</p>`;
 
       // Update document language and text direction
       if (currentLang === 'ar') {
