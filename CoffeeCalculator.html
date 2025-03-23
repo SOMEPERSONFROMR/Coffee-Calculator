@@ -9,8 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #f3e9d2; /* Light coffee cream background */
-      color: #3e2723;           /* Dark coffee text */
+      background-color: #f3e9d2;
+      color: #3e2723;
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
@@ -31,7 +31,7 @@
     .container {
       max-width: 400px;
       background-color: #fff;
-      border: 2px solid #6f4e37; /* Coffee brown border */
+      border: 2px solid #6f4e37;
       border-radius: 10px;
       padding: 20px;
       margin: 20px auto;
@@ -70,7 +70,7 @@
       text-align: center;
     }
     select {
-      text-align-last: center; /* Centers the selected option */
+      text-align-last: center;
     }
     option {
       text-align: center;
@@ -79,7 +79,13 @@
       margin-top: 20px;
       font-weight: bold;
     }
-    /* Timer section styling */
+    /* Container for options with slide-down/up effect */
+    #optionsContainer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+    /* Timer section styling – always visible */
     #timerSection {
       margin-top: 20px;
       text-align: center;
@@ -137,52 +143,52 @@
     <button id="langToggle"></button>
     <h1 id="title">حاسبة القهوة</h1>
 
-    <label id="ratioLabel" for="ratio">اختر النسبة (قهوة:ماء):</label>
-    <select id="ratio">
-      <option value="10">1:10 - مستوى الطعم: قوي جداً</option>
-      <option value="11">1:11 - مستوى الطعم: قوي</option>
-      <option value="12">1:12 - مستوى الطعم: متوسط</option>
-      <option value="13">1:13 - مستوى الطعم: متوازن</option>
-      <option value="14">1:14 - مستوى الطعم: سلس</option>
-      <option value="15" selected>1:15 - مستوى الطعم: قياسي</option>
-      <option value="16">1:16 - مستوى الطعم: خفيف</option>
-      <option value="17">1:17 - مستوى الطعم: أخف</option>
-      <option value="18">1:18 - مستوى الطعم: أخف جداً</option>
-    </select>
-
-    <!-- Two buttons for brew method -->
+    <!-- Brew mode buttons -->
     <div id="brewButtons">
       <button id="hotBtn">Hot V60</button>
       <button id="coldBtn">Cold V60</button>
     </div>
 
-    <!-- Coffee input group (placed first for Cold) -->
-    <div class="input-group" id="coffeeGroup">
-      <div class="input-label">
-        <label id="coffeeLabel" for="coffee">القهوة:</label>
-        <select id="coffeeUnit"></select>
+    <!-- Options container for ratio, coffee/water/ice inputs and result -->
+    <div id="optionsContainer">
+      <label id="ratioLabel" for="ratio">اختر النسبة (قهوة:ماء):</label>
+      <select id="ratio">
+        <option value="10">1:10 - مستوى الطعم: قوي جداً</option>
+        <option value="11">1:11 - مستوى الطعم: قوي</option>
+        <option value="12">1:12 - مستوى الطعم: متوسط</option>
+        <option value="13">1:13 - مستوى الطعم: متوازن</option>
+        <option value="14">1:14 - مستوى الطعم: سلس</option>
+        <option value="15" selected>1:15 - مستوى الطعم: قياسي</option>
+        <option value="16">1:16 - مستوى الطعم: خفيف</option>
+        <option value="17">1:17 - مستوى الطعم: أخف</option>
+        <option value="18">1:18 - مستوى الطعم: أخف جداً</option>
+      </select>
+
+      <div class="input-group" id="coffeeGroup">
+        <div class="input-label">
+          <label id="coffeeLabel" for="coffee">القهوة:</label>
+          <select id="coffeeUnit"></select>
+        </div>
+        <input type="number" id="coffee" placeholder="ادخل كمية القهوة">
       </div>
-      <input type="number" id="coffee" placeholder="ادخل كمية القهوة">
-    </div>
 
-    <!-- Water input group -->
-    <div class="input-group" id="waterGroup">
-      <div class="input-label">
-        <label id="waterLabel" for="water">الماء:</label>
-        <select id="waterUnit"></select>
+      <div class="input-group" id="waterGroup">
+        <div class="input-label">
+          <label id="waterLabel" for="water">الماء:</label>
+          <select id="waterUnit"></select>
+        </div>
+        <input type="number" id="water" placeholder="ادخل كمية الماء">
       </div>
-      <input type="number" id="water" placeholder="ادخل كمية الماء">
+
+      <div class="input-group" id="iceGroup">
+        <label id="iceLabel" for="ice">Ice:</label>
+        <input type="number" id="ice" placeholder="">
+      </div>
+      
+      <p id="result"></p>
     </div>
 
-    <div class="input-group" id="iceGroup">
-      <label id="iceLabel" for="ice">Ice:</label>
-      <input type="number" id="ice" placeholder="">
-    </div>
-    
-
-    <p id="result"></p>
-
-    <!-- Timer Section -->
+    <!-- Timer Section (always visible) -->
     <div id="timerSection">
       <p id="timerDisplay">00:00</p>
       <button id="startTimer">Start Timer</button>
@@ -192,7 +198,7 @@
 
   <footer id="footer"></footer>
 
-  <!-- Audio elements: one for pep sound and one for start sound -->
+  <!-- Audio elements -->
   <audio id="pepSound" src="pep.mp3" preload="auto"></audio>
   <audio id="startSound" src="startpep.mp3" preload="auto"></audio>
 
@@ -200,24 +206,24 @@
     /* Generate random coffee-themed icons in the background */
     (function generateBeans() {
       const container = document.getElementById("bean-container");
-      const beanCount = 10; // Number of each icon to generate
+      const beanCount = 10;
       const images = ['mybean.svg', 'grinder.svg', 'cup.svg', 'coffeemaker.svg', 'barista.svg'];
       images.forEach(src => {
         for (let i = 0; i < beanCount; i++) {
           const img = document.createElement("img");
           img.src = src;
           img.style.position = "absolute";
-          img.style.width = (Math.random() * 30 + 20) + "px"; // Random width between 20 and 50px
+          img.style.width = (Math.random() * 30 + 20) + "px";
           img.style.top = (Math.random() * 100) + "%";
           img.style.left = (Math.random() * 100) + "%";
-          img.style.opacity = 0.3; // Light opacity
+          img.style.opacity = 0.3;
           img.style.pointerEvents = "none";
           container.appendChild(img);
         }
       });
     })();
 
-    // Extended translations (simplified here to keep focus on brew modes)
+    // Extended translations with brew mode button labels
     const translations = {
       ar: {
         title: "حاسبة القهوة",
@@ -247,7 +253,9 @@
         footerLine1: "استمتع بقهوتك",
         footerLine2: "بواسطة تميم",
         startTimer: "ابدأ المؤقت",
-        resetTimer: "إعادة المؤقت"
+        resetTimer: "إعادة المؤقت",
+        hotV60: "V60 حار",
+        coldV60: "V60 بارد"
       },
       en: {
         title: "Coffee Calculator",
@@ -277,19 +285,23 @@
         footerLine1: "Enjoy Your Coffee",
         footerLine2: "By Tamim",
         startTimer: "Start Timer",
-        resetTimer: "Reset Timer"
+        resetTimer: "Reset Timer",
+        hotV60: "Hot V60",
+        coldV60: "Cold V60"
       }
     };
 
     let currentLang = 'en';
-    let brewMode = 'hot'; // "hot" or "cold"
+    let brewMode = null; // "hot" or "cold"
+    let optionsOpen = false;
+    let updating = false;
 
     // DOM elements
     const title = document.getElementById('title');
     const ratioLabel = document.getElementById('ratioLabel');
+    const ratioSelect = document.getElementById('ratio');
     const waterLabel = document.getElementById('waterLabel');
     const coffeeLabel = document.getElementById('coffeeLabel');
-    const ratioSelect = document.getElementById('ratio');
     const waterInput = document.getElementById('water');
     const coffeeInput = document.getElementById('coffee');
     const waterUnitSelect = document.getElementById('waterUnit');
@@ -303,6 +315,7 @@
     const startTimerBtn = document.getElementById('startTimer');
     const resetTimerBtn = document.getElementById('resetTimer');
     const timerDisplay = document.getElementById('timerDisplay');
+    const optionsContainer = document.getElementById('optionsContainer');
     const pepSound = document.getElementById('pepSound');
     const startSound = document.getElementById('startSound');
 
@@ -320,7 +333,6 @@
     function updateLanguage() {
       const texts = translations[currentLang];
 
-      // Basic text content
       title.textContent = texts.title;
       ratioLabel.textContent = texts.ratioLabel;
       waterLabel.textContent = texts.waterLabel;
@@ -328,26 +340,24 @@
       iceLabel.textContent = texts.iceLabel || "Ice:";
       waterInput.placeholder = texts.waterPlaceholder;
       coffeeInput.placeholder = texts.coffeePlaceholder;
-      if (brewMode === 'cold') {
-        waterInput.placeholder = texts.coldWaterPlaceholder;
-        coffeeInput.placeholder = texts.coldCoffeePlaceholder;
-        iceInput.placeholder = texts.coldIcePlaceholder;
-      }
+      iceInput.placeholder = texts.coldIcePlaceholder;
+
       langToggle.textContent = texts.toggleLang;
       startTimerBtn.textContent = texts.startTimer;
       resetTimerBtn.textContent = texts.resetTimer;
+      
+      // Update brew mode buttons with the new translation keys.
+      hotBtn.textContent = texts.hotV60;
+      coldBtn.textContent = texts.coldV60;
 
-      // Title font
       title.className = (currentLang === 'ar') ? 'arabic' : 'english';
 
-      // Ratio options
       for (let i = 0; i < ratioSelect.options.length; i++) {
         const option = ratioSelect.options[i];
         const value = option.value;
         option.textContent = texts.options[value];
       }
 
-      // Populate water unit select
       waterUnitSelect.innerHTML = "";
       for (let key in texts.waterUnitOptions) {
         const opt = document.createElement('option');
@@ -355,7 +365,7 @@
         opt.textContent = texts.waterUnitOptions[key];
         waterUnitSelect.appendChild(opt);
       }
-      // Populate coffee unit select
+
       coffeeUnitSelect.innerHTML = "";
       for (let key in texts.coffeeUnitOptions) {
         const opt = document.createElement('option');
@@ -364,10 +374,8 @@
         coffeeUnitSelect.appendChild(opt);
       }
 
-      // Footer
       footer.innerHTML = `<p>${texts.footerLine1}</p><p>${texts.footerLine2}</p>`;
 
-      // RTL vs LTR
       if (currentLang === 'ar') {
         document.documentElement.lang = 'ar';
         document.documentElement.dir = 'rtl';
@@ -376,128 +384,204 @@
         document.documentElement.dir = 'ltr';
       }
 
-      // Reset everything
+      resetAll();
+    }
+
+    function resetTimerWithoutSound() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      elapsedSeconds = 0;
+      updateTimerDisplay();
+    }
+
+    function resetAll() {
       waterInput.value = "";
       coffeeInput.value = "";
       iceInput.value = "";
       result.textContent = "";
-      resetTimer();
+      closeOptions();
+      resetTimerWithoutSound();
+      brewMode = null;
     }
 
-    // Initial UI
     updateLanguage();
 
-    // Toggle language
     langToggle.addEventListener('click', () => {
       currentLang = (currentLang === 'ar') ? 'en' : 'ar';
       updateLanguage();
     });
 
     // ----------------------
+    // Options Toggle Functions
+    // ----------------------
+    function openOptions() {
+      optionsContainer.style.maxHeight = optionsContainer.scrollHeight + "px";
+      optionsOpen = true;
+    }
+
+    function closeOptions() {
+      optionsContainer.style.maxHeight = "0";
+      optionsOpen = false;
+    }
+
+    function adjustOptionsHeight() {
+      optionsContainer.style.maxHeight = optionsContainer.scrollHeight + "px";
+    }
+
+    // ----------------------
     // Brew Mode
     // ----------------------
     function setBrewMode(mode) {
-      brewMode = mode; // "hot" or "cold"
+      brewMode = mode;
       const texts = translations[currentLang];
 
       if (brewMode === 'hot') {
-        iceGroup.style.display = 'none';
+        iceGroup.style.display = "none";
         waterInput.placeholder = texts.waterPlaceholder;
         coffeeInput.placeholder = texts.coffeePlaceholder;
         iceInput.value = "";
       } else {
-        iceGroup.style.display = 'block';
+        iceGroup.style.display = "block";
         waterInput.placeholder = texts.coldWaterPlaceholder;
         coffeeInput.placeholder = texts.coldCoffeePlaceholder;
         iceInput.placeholder = texts.coldIcePlaceholder;
       }
-
-      // Clear all inputs
+      
+      if (optionsOpen) {
+        adjustOptionsHeight();
+      }
+      
       waterInput.value = "";
       coffeeInput.value = "";
       iceInput.value = "";
       result.textContent = "";
     }
 
-    // Click events for brew mode
-    hotBtn.addEventListener('click', () => setBrewMode('hot'));
-    coldBtn.addEventListener('click', () => setBrewMode('cold'));
+    hotBtn.addEventListener('click', () => {
+      if (brewMode === 'hot' && optionsOpen) {
+        closeOptions();
+        brewMode = null;
+        resetAll();
+      } else {
+        setBrewMode('hot');
+        if (!optionsOpen) {
+          openOptions();
+        }
+      }
+    });
+    coldBtn.addEventListener('click', () => {
+      if (brewMode === 'cold' && optionsOpen) {
+        closeOptions();
+        brewMode = null;
+        resetAll();
+      } else {
+        setBrewMode('cold');
+        if (!optionsOpen) {
+          openOptions();
+        }
+      }
+    });
 
     // ----------------------
-    // Calculation Logic
+    // Calculation Functions
     // ----------------------
-    function calculateFromCoffee() {
-  const texts = translations[currentLang];
-  const ratio = parseFloat(ratioSelect.value);
-  const coffeeVal = parseFloat(coffeeInput.value);
+    function calculateWaterFromCoffee() {
+      const ratio = parseFloat(ratioSelect.value);
+      const coffeeVal = parseFloat(coffeeInput.value);
+      if (isNaN(coffeeVal) || coffeeVal <= 0) {
+        result.textContent = "";
+        return;
+      }
+      const coffeeUnit = coffeeUnitSelect.value;
+      const coffeeGrams = (coffeeUnit === 'oz') ? coffeeVal * 28.3495 : coffeeVal;
+      const totalWaterML = coffeeGrams * ratio;
+      const waterUnit = waterUnitSelect.value;
+      const finalWaterVal = (waterUnit === 'oz') ? totalWaterML / 29.5735 : totalWaterML;
+      waterInput.value = finalWaterVal.toFixed(2);
 
-  if (isNaN(coffeeVal) || coffeeVal <= 0) {
-    result.textContent = "";
-    return;
-  }
-
-  // Convert coffee to grams if user selected oz
-  const coffeeUnit = coffeeUnitSelect.value;
-  const coffeeGrams = (coffeeUnit === 'oz') ? coffeeVal * 28.3495 : coffeeVal;
-
-  // total water in ml (for ratio calculation)
-  const totalWaterML = coffeeGrams * ratio;
-
-  if (brewMode === 'hot') {
-    // HOT MODE: Standard coffee -> water
-    const waterUnit = waterUnitSelect.value;
-    // Convert totalWaterML into user-chosen water unit
-    const finalWaterVal = (waterUnit === 'oz')
-      ? totalWaterML / 29.5735
-      : totalWaterML;
-
-    // Display water in the Water input
-    waterInput.value = finalWaterVal.toFixed(2);
-
-    // Build result text
-    const waterUnitDisplay = waterUnitSelect.options[waterUnitSelect.selectedIndex].text;
-    const coffeeUnitDisplay = coffeeUnitSelect.options[coffeeUnitSelect.selectedIndex].text;
-
-    if (currentLang === 'ar') {
-      result.textContent = `لـ ${coffeeVal.toFixed(2)} ${coffeeUnitDisplay} من القهوة بنسبة 1:${ratio}، استخدم ${finalWaterVal.toFixed(2)} ${waterUnitDisplay} من الماء.`;
-    } else {
-      result.textContent = `For ${coffeeVal.toFixed(2)} ${coffeeUnitDisplay} of coffee at a 1:${ratio} ratio, use ${finalWaterVal.toFixed(2)} ${waterUnitDisplay} of water.`;
+      const waterUnitDisplay = waterUnitSelect.options[waterUnitSelect.selectedIndex].text;
+      const coffeeUnitDisplay = coffeeUnitSelect.options[coffeeUnitSelect.selectedIndex].text;
+      if (currentLang === 'ar') {
+        result.textContent = `لـ ${coffeeVal.toFixed(2)} ${coffeeUnitDisplay} من القهوة بنسبة 1:${ratio}، استخدم ${finalWaterVal.toFixed(2)} ${waterUnitDisplay} من الماء.`;
+      } else {
+        result.textContent = `For ${coffeeVal.toFixed(2)} ${coffeeUnitDisplay} of coffee at a 1:${ratio} ratio, use ${finalWaterVal.toFixed(2)} ${waterUnitDisplay} of water.`;
+      }
     }
 
-  } else {
-    // COLD MODE: Split total water in half => Water and Ice
-    const waterUnit = waterUnitSelect.value;
-    // Half of total water in ml
-    const halfWaterML = totalWaterML / 2;
+    function calculateCoffeeFromWater() {
+      const ratio = parseFloat(ratioSelect.value);
+      const waterVal = parseFloat(waterInput.value);
+      if (isNaN(waterVal) || waterVal <= 0) {
+        result.textContent = "";
+        return;
+      }
+      const waterUnit = waterUnitSelect.value;
+      const waterML = (waterUnit === 'oz') ? waterVal * 29.5735 : waterVal;
+      const coffeeGrams = waterML / ratio;
+      const coffeeUnit = coffeeUnitSelect.value;
+      const finalCoffeeVal = (coffeeUnit === 'oz') ? coffeeGrams / 28.3495 : coffeeGrams;
+      coffeeInput.value = finalCoffeeVal.toFixed(2);
 
-    // Convert halfWaterML to user-chosen unit
-    const halfWaterVal = (waterUnit === 'oz')
-      ? halfWaterML / 29.5735
-      : halfWaterML;
-
-    // Show placeholders in the chosen unit for both Water and Ice
-    const waterUnitDisplay = waterUnitSelect.options[waterUnitSelect.selectedIndex].text;
-
-    // Clear current inputs and just show placeholders
-    waterInput.value = "";
-    waterInput.placeholder = halfWaterVal.toFixed(2) + " " + waterUnitDisplay;
-
-    iceInput.value = "";
-    iceInput.placeholder = halfWaterVal.toFixed(2) + " " + waterUnitDisplay;
-
-    // Build result text
-    const coffeeUnitDisplay = coffeeUnitSelect.options[coffeeUnitSelect.selectedIndex].text;
-    if (currentLang === 'ar') {
-      result.textContent = `لـ ${coffeeVal.toFixed(2)} ${coffeeUnitDisplay} من القهوة بنسبة 1:${ratio}، نصف الماء في الماء والنصف الآخر ثلج.`;
-    } else {
-      result.textContent = `For ${coffeeVal.toFixed(2)} ${coffeeUnitDisplay} of coffee at a 1:${ratio} ratio, half goes to water and half to ice.`;
+      const waterUnitDisplay = waterUnitSelect.options[waterUnitSelect.selectedIndex].text;
+      const coffeeUnitDisplay = coffeeUnitSelect.options[coffeeUnitSelect.selectedIndex].text;
+      if (currentLang === 'ar') {
+        result.textContent = `لـ ${finalCoffeeVal.toFixed(2)} ${coffeeUnitDisplay} من القهوة، تحتاج إلى ${waterVal.toFixed(2)} ${waterUnitDisplay} من الماء.`;
+      } else {
+        result.textContent = `For ${finalCoffeeVal.toFixed(2)} ${coffeeUnitDisplay} of coffee, you need ${waterVal.toFixed(2)} ${waterUnitDisplay} of water.`;
+      }
     }
-  }
-}
 
+    // New function for Cold V60 calculations:
+    // When coffee is entered, calculate total water then split equally into water and ice.
+    function calculateColdFromCoffee() {
+      const ratio = parseFloat(ratioSelect.value);
+      const coffeeVal = parseFloat(coffeeInput.value);
+      if (isNaN(coffeeVal) || coffeeVal <= 0) {
+        result.textContent = "";
+        return;
+      }
+      const coffeeUnit = coffeeUnitSelect.value;
+      const coffeeGrams = (coffeeUnit === 'oz') ? coffeeVal * 28.3495 : coffeeVal;
+      const totalWaterML = coffeeGrams * ratio;
+      const halfWaterML = totalWaterML / 2;
+      const waterUnit = waterUnitSelect.value;
+      const halfWaterVal = (waterUnit === 'oz') ? halfWaterML / 29.5735 : halfWaterML;
+      
+      // Update both water and ice fields with the half value.
+      waterInput.value = halfWaterVal.toFixed(2);
+      iceInput.value = halfWaterVal.toFixed(2);
 
-    // If the user changes the ratio or coffee, recalc for hot or cold
-    coffeeInput.addEventListener('input', calculateFromCoffee);
+      const waterUnitDisplay = waterUnitSelect.options[waterUnitSelect.selectedIndex].text;
+      const coffeeUnitDisplay = coffeeUnitSelect.options[coffeeUnitSelect.selectedIndex].text;
+      if (currentLang === 'ar') {
+        result.textContent = `لـ ${coffeeVal.toFixed(2)} ${coffeeUnitDisplay} من القهوة بنسبة 1:${ratio}، يتم تقسيم الكمية: ${halfWaterVal.toFixed(2)} ${waterUnitDisplay} للماء و${halfWaterVal.toFixed(2)} ${waterUnitDisplay} للثلج.`;
+      } else {
+        result.textContent = `For ${coffeeVal.toFixed(2)} ${coffeeUnitDisplay} of coffee at a 1:${ratio} ratio, split equally: ${halfWaterVal.toFixed(2)} ${waterUnitDisplay} each for water and ice.`;
+      }
+    }
+
+    // ----------------------
+    // Input Event Listeners
+    // ----------------------
+    coffeeInput.addEventListener('input', () => {
+      if (updating) return;
+      updating = true;
+      if (brewMode === 'hot') {
+        calculateWaterFromCoffee();
+      } else if (brewMode === 'cold') {
+        calculateColdFromCoffee();
+      }
+      updating = false;
+    });
+
+    waterInput.addEventListener('input', () => {
+      if (brewMode !== 'hot') return;
+      if (updating) return;
+      updating = true;
+      calculateCoffeeFromWater();
+      updating = false;
+    });
+
     ratioSelect.addEventListener('change', () => {
       coffeeInput.value = "";
       waterInput.value = "";
@@ -505,24 +589,25 @@
       result.textContent = "";
     });
 
-    // If in hot mode, user can type water or coffee. 
-    // For brevity, we'll only demonstrate coffee => water.
-    // If you want water => coffee in hot mode, you can add a separate function.
-
-    // If the user changes water/ice units in hot mode, we can recalc if coffee is known:
     waterUnitSelect.addEventListener('change', () => {
       if (brewMode === 'hot' && coffeeInput.value) {
-        calculateFromCoffee();
+        calculateWaterFromCoffee();
+      } else if (brewMode === 'cold' && coffeeInput.value) {
+        calculateColdFromCoffee();
       }
     });
     coffeeUnitSelect.addEventListener('change', () => {
       if (coffeeInput.value) {
-        calculateFromCoffee();
+        if (brewMode === 'hot') {
+          calculateWaterFromCoffee();
+        } else if (brewMode === 'cold') {
+          calculateColdFromCoffee();
+        }
       }
     });
 
     // ----------------------
-    // Timer
+    // Timer Functions
     // ----------------------
     function updateTimerDisplay() {
       const minutes = Math.floor(elapsedSeconds / 60);
@@ -534,7 +619,6 @@
 
     function startTimer() {
       if (timerInterval === null) {
-        // Play the start sound when timer starts
         startSound.play();
         timerInterval = setInterval(() => {
           elapsedSeconds++;
